@@ -1,65 +1,74 @@
 /*
  * @Author: your name
  * @Date: 2020-10-10 15:45:26
- * @LastEditTime: 2020-10-12 19:18:39
+ * @LastEditTime: 2020-10-31 20:23:13
  * @LastEditors: Please set LastEditors
  * @Description: In User Settings Edit
  * @FilePath: \Dragon\remote.cpp
  */
 #include "remote.h"
+#include "Timerone.h"
 
-remote::remote(motor &_control, u8 _shoot_pin) : control(_control), shoot_pin(_shoot_pin)
+remote::remote(motor &_control, Servo &shoot_gun, void sig()) : control(_control), shootgun(shoot_gun), signal(sig)
 {
     Order = wait;
-    pinMode(shoot_pin, OUTPUT);
-    digitalWrite(shoot_pin, LOW);
+    //shootgun.attach(11);
 }
 
 void remote::fire()
 {
-    digitalWrite(shoot_pin, HIGH);
-    delay(100);
-    digitalWrite(shoot_pin, LOW);
+    Timer1.detachInterrupt();
+    shootgun.attach(4);
+    shootgun.write(80);
+    delay(150);
+    
+    shootgun.write(0);
+    delay(170);
+    shootgun.detach();
+    Timer1.attachInterrupt(signal, 50000);
 }
+
+static int SPEED = ANALOG_MAX + 10;
 
 void remote::mode()
 {
     Order = wait;
-    digitalWrite(shoot_pin, LOW);
+    Serial.println(Modes);
     
     while (Modes == REMOTE_FLAG) {
         switch (Order) {
         case forward:
-            Serial.println("forward");
-            control.forward(ANALOG_MAX);
+            control.forward(SPEED, SPEED);
             break;
 
         case backward:
-            Serial.println("backward");
             control.backward();
             break;
 
         case left:
-            Serial.println("left");
-            control.turn_left(ANALOG_MAX);
+            control.turn_left(SPEED + 15);
             break;
 
         case right:
-            Serial.println("right");
-            control.turn_right(ANALOG_MAX);
+            control.turn_right(SPEED + 15);
             break;
 
         case brake:
-            Serial.println("brake");
             control.brake();
             break;
 
         case shoot:
-            Serial.println("shoot");
             fire();
             break;
+        case up:
+            SPEED += 5;
+            break;
+        case down:
+            SPEED -= 5;
+            break;
         }
-        
+
+        Order = wait;
         delay(50);
     }
 } 

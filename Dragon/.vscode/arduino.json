@@ -1,4 +1,5 @@
 {
     "board": "arduino:avr:uno",
-    "sketch": "Dragon.ino"
+    "sketch": "Dragon.ino",
+    "programmer": "AVR ISP"
 }

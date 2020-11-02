@@ -1,7 +1,7 @@
 /*
  * @Author: your name
  * @Date: 2020-10-09 10:32:24
- * @LastEditTime: 2020-10-11 15:37:58
+ * @LastEditTime: 2020-10-17 08:46:41
  * @LastEditors: Please set LastEditors
  * @Description: In User Settings Edit
  * @FilePath: \Voice\voice\voice.ino
@@ -35,12 +35,12 @@ class voice
     u8 left_pin;
     u8 right_pin;
     motor &control;
+
+    void get_dist(DIST_INFO &distance);
+    int get_dis_front();
   
 public:
     voice(motor &_control, u8 _send_pin, u8 _front_pin, u8 _left_pin, u8 _right_pin);
-
-    /* return the distance with cm */
-    void get_dist(DIST_INFO &distance);
     void mode();
 };
 

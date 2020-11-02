@@ -1,0 +1,7 @@
+{
+    "files.associations": {
+        "*.htm": "html",
+        "*.html": "html",
+        "cmath": "cpp"
+    }
+}

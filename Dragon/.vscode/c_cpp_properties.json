@@ -3,6 +3,7 @@
         {
             "name": "Win32",
             "includePath": [
+
                 "C:\\Program files (x86)\\Arduino\\**",
                 "C:\\Program files (x86)\\Arduino\\tools\\**",
                 "C:\\Program files (x86)\\Arduino\\hardware\\arduino\\avr\\**",
